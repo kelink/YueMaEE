@@ -25,12 +25,14 @@ public class YContactDaoImpl extends BaseDao implements YContactDao {
 	}
 
 	@Override
-	public boolean addContact(YContact contactObj) {
+	public boolean addContacts(List<YContact> contactObj) {
 		Session session = this.getSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(contactObj);
+			for (YContact contact : contactObj) {
+				session.save(contact);
+			}
 			session.flush();
 			tx.commit();
 			return true;

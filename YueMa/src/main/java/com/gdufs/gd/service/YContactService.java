@@ -5,13 +5,17 @@ import java.util.List;
 import com.gdufs.gd.entity.YContact;
 
 public interface YContactService {
-	public void addContact();
+	public boolean addAContact(YContact contactObj);
 
-	public List<YContact> listContact();
+	public boolean addContactList(List<YContact> contactList);
+
+	public List<YContact> listAllContact();
 
 	public List<YContact> listContactById();
 
-	public void deleteContact();
+	public boolean deleteAContact(int id);
 
-	public void updateContact();
+	public boolean updateContact(YContact contactObj);
+
+	public boolean updateContactByUserId(int userId, List<YContact> contactList);
 }

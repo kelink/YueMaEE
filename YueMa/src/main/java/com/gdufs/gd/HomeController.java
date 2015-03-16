@@ -25,9 +25,6 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
 
-	@Resource(name = "userService")
-	private YUserService userService;
-
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -43,22 +40,6 @@ public class HomeController {
 
 		model.addAttribute("serverTime", formattedDate);
 
-		return "home";
-	}
-
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(Locale locale, Model model) {
-		YUser user = new YUser();
-		user.setFacePath("C:\\1.jpg");
-		user.setIntroduce("test");
-		user.setCreateTime(new Date());
-		user.setNickName("test");
-		user.setPassword("123321");
-		user.setPhoneNumber("18825162514");
-		user.setLastLoginMac("192.168.202.73");
-		user.setLastLoginTimeDate(new Date());
-		userService.addYUser(user);
-		// System.out.println(userService.getYUserById("20150111001"));
 		return "home";
 	}
 

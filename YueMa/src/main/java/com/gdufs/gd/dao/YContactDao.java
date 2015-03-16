@@ -5,7 +5,8 @@ import java.util.List;
 import com.gdufs.gd.entity.YContact;
 
 public interface YContactDao {
-	public boolean addContact(YContact contactObj);
+
+	public boolean addContacts(List<YContact> contactObj);
 
 	public boolean deleteContactById(String id);
 

@@ -1,12 +1,8 @@
 package com.gdufs.gd.daoImpl;
 
 import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,20 +12,9 @@ import com.gdufs.gd.dao.YUserDao;
 import com.gdufs.gd.entity.YUser;
 
 @Repository(value = "userDao")
-public class YUserDaoImpl implements YUserDao {
+public class YUserDaoImpl extends BaseDao implements YUserDao {
 	private static final Logger logger = LoggerFactory
 			.getLogger(YUserDaoImpl.class);
-
-	@Resource(name = "sessionFactory")
-	protected SessionFactory sessionFactory;
-
-	public Session getSession() {
-		return this.sessionFactory.getCurrentSession();
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
 
 	@Override
 	public boolean addYUser(YUser user) throws Exception {

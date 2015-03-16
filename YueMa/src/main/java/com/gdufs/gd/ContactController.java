@@ -1,11 +1,14 @@
 package com.gdufs.gd;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Resource;
 import javax.validation.groups.Default;
 
 import org.codehaus.jackson.JsonEncoding;
@@ -21,8 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gdufs.gd.common.CResponse;
 import com.gdufs.gd.entity.TransferMessage;
 import com.gdufs.gd.entity.YContact;
+import com.gdufs.gd.entity.YUser;
+import com.gdufs.gd.service.YContactService;
+import com.gdufs.gd.service.YUserService;
 import com.gdufs.gd.util.JacksonUtil;
 import com.google.gson.JsonObject;
 
@@ -39,27 +46,36 @@ public class ContactController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ContactController.class);
 
+	@Resource(name = "contactService")
+	private YContactService contactService;
+
 	// 添加通讯录
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = "/addContact", method = RequestMethod.GET)
 	@ResponseBody
-	public String addContact(
-			@RequestParam(value = "contact", defaultValue = "", required = true) List<YContact> contact) {
+	public String addContact() {
 		TransferMessage messageObj = new TransferMessage();
+		YContact contact = new YContact();
+		YUser user = new YUser();
+		user.setId(2);
+		contact.setUser(user);
+		contact.setHostName("a");
+		contact.setHostNum("11");
+		contact.setFriendNum("22");
+		contact.setFirendName("b");
+		contact.setVersion(0);
+		ArrayList<YContact> list = new ArrayList<YContact>();
+		list.add(contact);
 
-		messageObj.setCode("1003");
-		messageObj.setExpire(new Date());
-		messageObj.setMessage("test");
-
-		// JsonObject object = new JsonObject();
-		// object.addProperty("22", "test");
-		// object.addProperty("52", "test");
-		//
-		// HashMap<String, String> aHashMap = new HashMap<String, String>();
-		// aHashMap.put("jj", "sad");
-		// messageObj.setResultMap(aHashMap);
-		// System.out.println(JacksonUtil.writeEntity2JSON(messageObj));
-		// return object.toString();
-		return null;
+		if (contactService.addContactList(list) == true) {
+			messageObj.setCode(CResponse.Code.SUCCESS);
+			messageObj.setExpire(new Date());
+			messageObj.setMessage(CResponse.Message.SUCCESS);
+		} else {
+			messageObj.setCode(CResponse.Code.ERROR);
+			messageObj.setExpire(new Date());
+			messageObj.setMessage(CResponse.Message.ERROR);
+		}
+		return JacksonUtil.writeEntity2JSON(messageObj);
 	}
 
 	// /**

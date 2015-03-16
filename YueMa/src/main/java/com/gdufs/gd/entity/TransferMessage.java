@@ -19,17 +19,17 @@ public class TransferMessage extends BaseEntity implements Serializable {
 		super();
 	}
 
-	private String code;
+	private int code;
 	private Date createTime;
 	private Date expire;
 	private String message;
 	private Map<?, ?> resultMap;
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 
