@@ -2,41 +2,70 @@ package com.gdufs.gd.daoImpl;
 
 import java.util.List;
 
-import com.gdufs.gd.dao.YContactDao;
-import com.gdufs.gd.entity.YContactObj;
+import javax.annotation.Resource;
 
-public class YContactDaoImpl implements YContactDao{
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.gdufs.gd.dao.YContactDao;
+import com.gdufs.gd.entity.YContact;
+
+@Repository(value = "contactDao")
+public class YContactDaoImpl extends BaseDao implements YContactDao {
+
+	protected static final Logger logger = LoggerFactory
+			.getLogger(YContactDaoImpl.class);
 
 	public YContactDaoImpl() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	@Override
-	public void addContact(YContactObj contactObj) {
+	public boolean addContact(YContact contactObj) {
+		Session session = this.getSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.save(contactObj);
+			session.flush();
+			tx.commit();
+			return true;
+		} catch (Exception ex) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			logger.error("Add contact object error" + ex.getMessage());
+			return false;
+		}
+
+	}
+
+	@Override
+	public boolean deleteContactById(String id) {
+		return false;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void deleteContactById(String id) {
+	public boolean updateContactById(YContact contactObj) {
+		return false;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void updateContactById(YContactObj contactObj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<YContactObj> getContactObjById(String id) {
+	public List<YContact> getContactObjById(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<YContactObj> getAll() {
+	public List<YContact> getAllContact() {
 		// TODO Auto-generated method stub
 		return null;
 	}

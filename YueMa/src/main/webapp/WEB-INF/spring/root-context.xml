@@ -32,7 +32,11 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.gdufs.gd.entity.YUser</value>
-				<value>com.gdufs.gd.entity.YPNum</value>				
+				<value>com.gdufs.gd.entity.YActivity</value>
+				<value>com.gdufs.gd.entity.YPicture</value>
+				<value>com.gdufs.gd.entity.YLabel</value>
+				<value>com.gdufs.gd.entity.YActivityJoiner</value>	
+				<value>com.gdufs.gd.entity.YContact</value>									
 			</list>
 		</property>
 	</bean>  

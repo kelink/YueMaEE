@@ -1,29 +1,29 @@
-package com.gdufs.gd.entity;
-/**
- * Relation between Users
- * @author Administrator
- *
- */
-public class YRelation {
-
-	public YRelation() {}
-	
-	private String uId;
-	
-	private String fId;
-	/**
-	 * Ä°ÉúÈË:0
-	 * ÅóÓÑ:1
-	 * ÅóÓÑµÄÅóÓÑ: 2
-	 * 
-	 */
-	private int relaType;
-	
-	/**
-	 * ¹ØÏµÀ´×Ôcontacts:1
-	 * ¹ØÏµÀ´×Ô¹Ø×¢£º2
-	 */
-	
-	private int fromType;
-
-}
+//package com.gdufs.gd.entity;
+///**
+// * Relation between Users
+// * @author Administrator
+// *
+// */
+//public class YRelation {
+//
+//	public YRelation() {}
+//	
+//	private String uId;
+//	
+//	private String fId;
+//	/**
+//	 * Ä°ï¿½ï¿½ï¿½ï¿½:0
+//	 * ï¿½ï¿½ï¿½ï¿½:1
+//	 * ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½ï¿½ï¿½: 2
+//	 * 
+//	 */
+//	private int relaType;
+//	
+//	/**
+//	 * ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½contacts:1
+//	 * ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ô¹ï¿½×¢ï¿½ï¿½2
+//	 */
+//	
+//	private int fromType;
+//
+//}

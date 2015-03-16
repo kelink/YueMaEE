@@ -2,16 +2,16 @@ package com.gdufs.gd.dao;
 
 import java.util.List;
 
-import com.gdufs.gd.entity.YContactObj;
+import com.gdufs.gd.entity.YContact;
 
 public interface YContactDao {
-	public void addContact(YContactObj contactObj);
+	public boolean addContact(YContact contactObj);
 
-	public void deleteContactById(String id);
+	public boolean deleteContactById(String id);
 
-	public void updateContactById(YContactObj contactObj);
+	public boolean updateContactById(YContact contactObj);
 
-	public List<YContactObj> getContactObjById(String id);
+	public List<YContact> getContactObjById(String id);
 
-	public List<YContactObj> getAll();
+	public List<YContact> getAllContact();
 }
