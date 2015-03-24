@@ -1,52 +1,41 @@
 package com.gdufs.gd.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * User Entity
- * 
- * @author Administrator
- *
- */
 @Entity
 @Table(name = "YUser")
 public class YUser implements Serializable {
-	private static final long serialVersionUID = 4946128427171569052L;
+	private static final long serialVersionUID = 1L;
+	private int id;
+	private Calendar date;
+	private Set<YActivityUser> activityUsers;
 
-	public YUser() {
+	private Set<YActivity> activities;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = YActivity.class)
+	@JoinColumn(name = "creatorId")
+	public Set<YActivity> getActivities() {
+		return activities;
 	}
 
-	/**
-	 * 下面Id 生成策略为UUID
-	 *
-	 * @Id
-	 * @GeneratedValue(generator = "system-uuid")
-	 * @GenericGenerator(name = "system-uuid", strategy = "uuid.hex")
-	 * @Column(name = "uId", unique = true, nullable = false, length = 50)
-	 **/
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(length = 11, name = "id")
-	private int id;
+	public void setActivities(Set<YActivity> activities) {
+		this.activities = activities;
+	}
 
 	@Column(name = "nickName", length = 20, nullable = false)
 	private String nickName;
@@ -72,14 +61,34 @@ public class YUser implements Serializable {
 	private Date lastLoginTimeDate;
 
 	@Column(length = 50, nullable = false)
-	private String lastLoginMac;
+	private String lastLoginIp;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(length = 11, name = "id")
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Calendar getDate() {
+		return date;
+	}
+
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
+
+	@OneToMany(mappedBy = "user")
+	public Set<YActivityUser> getActivityUsers() {
+		return activityUsers;
+	}
+
+	public void setActivityUsers(Set<YActivityUser> activityUsers) {
+		this.activityUsers = activityUsers;
 	}
 
 	public String getNickName() {
@@ -138,21 +147,32 @@ public class YUser implements Serializable {
 		this.lastLoginTimeDate = lastLoginTimeDate;
 	}
 
-	public String getLastLoginMac() {
-		return lastLoginMac;
+	public String getLastLoginIp() {
+		return lastLoginIp;
 	}
 
-	public void setLastLoginMac(String lastLoginMac) {
-		this.lastLoginMac = lastLoginMac;
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
 	}
 
 	@Override
-	public String toString() {
-		return "YUser [id=" + id + ", nickName=" + nickName + ", phoneNumber="
-				+ phoneNumber + ", password=" + password + ", facePath="
-				+ facePath + ", introduce=" + introduce + ", createTime="
-				+ createTime + ", lastLoginTimeDate=" + lastLoginTimeDate
-				+ ", lastLoginMac=" + lastLoginMac + "]";
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		YUser other = (YUser) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
-
 }

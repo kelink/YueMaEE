@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.gdufs.gd.dao.YContactDao;
-import com.gdufs.gd.entity.YContact;
+import com.gdufs.gd.entity2.YContact;
 
 @Repository(value = "contactDao")
 public class YContactDaoImpl extends BaseDao implements YContactDao {

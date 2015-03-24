@@ -1,7 +1,5 @@
 package com.gdufs.gd.daoImpl;
 
-import java.util.List;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
@@ -17,8 +15,7 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 			.getLogger(YUserDaoImpl.class);
 
 	@Override
-	public boolean addYUser(YUser user) throws Exception {
-		logger.info("enter DAO layer---> addYUser");
+	public boolean addYUser(YUser user) {
 		Session session = this.getSession();
 		Transaction tx = null;
 		try {
@@ -34,31 +31,6 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 			logger.error("Add YUser error" + ex.getMessage());
 			return false;
 		}
-	}
-
-	@Override
-	public boolean updateYUser(YUser user) throws Exception {
-		return false;
-	}
-
-	@Override
-	public boolean delteYUser(String uId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public YUser getYUserById(String uId) throws Exception {
-		String hql = "from YUser u where u.uId=?";
-		Query query = this.getSession().createQuery(hql);
-		query.setString(0, uId);
-		return (YUser) query.uniqueResult();
-	}
-
-	@Override
-	public List<YUser> getYUserList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

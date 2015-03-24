@@ -2,7 +2,7 @@ package com.gdufs.gd.dao;
 
 import java.util.List;
 
-import com.gdufs.gd.entity.YContact;
+import com.gdufs.gd.entity2.YContact;
 
 public interface YContactDao {
 

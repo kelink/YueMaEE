@@ -2,13 +2,11 @@ package com.gdufs.gd.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,45 +16,26 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "YActivity")
 public class YActivity implements Serializable {
-	private static final long serialVersionUID = 6495310789414594716L;
 
-	public YActivity() {
-		super();
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", length = 11)
+	private static final long serialVersionUID = 1L;
 	private int id;
+	private String name;
+	private double price;
 
-	@OneToOne
-	@JoinColumn(name = "creator_Id")
-	private YUser creator;
+	private Set<YActivityUser> activityUsers;
+
+	private YUser creator;// 创建者
 
 	@Column(name = "title", length = 50, nullable = false)
 	private String title;// 活动的title或者name
 
 	@Column(name = "introduce", length = 100, nullable = false)
 	private String introduce;// 活动的简介
-
-	@OneToMany(targetEntity = YPicture.class, cascade = CascadeType.ALL)
-	@Fetch(FetchMode.JOIN)
-	// updatable=false很关键，如果没有它，在级联删除的时候就会报错(反转的问题)
-	@JoinColumn(name = "activity_Id", updatable = false)
-	private Set<YPicture> pictures = new HashSet<YPicture>();// 活动添加的图片
-
-	@OneToMany(targetEntity = YLabel.class, cascade = CascadeType.ALL)
-	@Fetch(FetchMode.JOIN)
-	// updatable=false很关键，如果没有它，在级联删除的时候就会报错(反转的问题)
-	@JoinColumn(name = "activity_Id", updatable = false)
-	private Set<YLabel> labels = new HashSet<YLabel>();// 活动添加的标签
 
 	@Column(name = "createTimeDate", length = 50, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
@@ -85,12 +64,21 @@ public class YActivity implements Serializable {
 	@Column(name = "activityAddressLongitude", length = 50, nullable = false)
 	private String activityAddressLongitude;// 经度
 
+	@Column(name = "activityAddressLatitude", length = 50, nullable = false)
+	private String activityAddressLatitude;// 纬度
+
+	@Column(name = "collectAddressLongitude", length = 50, nullable = false)
+	private String collectAddressLongitude;// 纬度
+
 	@Column(name = "collectAddressLatitude", length = 50, nullable = false)
 	private String collectAddressLatitude;// 纬度
 
-	@Column(name = "count", length = 11, nullable = false)
-	private int count;
+	@Column(name = "maxCount", length = 11, nullable = false)
+	private int maxCount;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(length = 11, name = "id")
 	public int getId() {
 		return id;
 	}
@@ -99,12 +87,29 @@ public class YActivity implements Serializable {
 		this.id = id;
 	}
 
-	public YUser getCreator() {
-		return creator;
+	public String getName() {
+		return name;
 	}
 
-	public void setCreator(YUser creator) {
-		this.creator = creator;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	@OneToMany(mappedBy = "activity")
+	public Set<YActivityUser> getActivityUsers() {
+		return activityUsers;
+	}
+
+	public void setActivityUsers(Set<YActivityUser> activityUsers) {
+		this.activityUsers = activityUsers;
 	}
 
 	public String getTitle() {
@@ -121,22 +126,6 @@ public class YActivity implements Serializable {
 
 	public void setIntroduce(String introduce) {
 		this.introduce = introduce;
-	}
-
-	public Set<YPicture> getPictures() {
-		return pictures;
-	}
-
-	public void setPictures(Set<YPicture> pictures) {
-		this.pictures = pictures;
-	}
-
-	public Set<YLabel> getLabels() {
-		return labels;
-	}
-
-	public void setLabels(Set<YLabel> labels) {
-		this.labels = labels;
 	}
 
 	public Date getCreateTimeDate() {
@@ -203,6 +192,22 @@ public class YActivity implements Serializable {
 		this.activityAddressLongitude = activityAddressLongitude;
 	}
 
+	public String getActivityAddressLatitude() {
+		return activityAddressLatitude;
+	}
+
+	public void setActivityAddressLatitude(String activityAddressLatitude) {
+		this.activityAddressLatitude = activityAddressLatitude;
+	}
+
+	public String getCollectAddressLongitude() {
+		return collectAddressLongitude;
+	}
+
+	public void setCollectAddressLongitude(String collectAddressLongitude) {
+		this.collectAddressLongitude = collectAddressLongitude;
+	}
+
 	public String getCollectAddressLatitude() {
 		return collectAddressLatitude;
 	}
@@ -211,25 +216,43 @@ public class YActivity implements Serializable {
 		this.collectAddressLatitude = collectAddressLatitude;
 	}
 
-	public int getCount() {
-		return count;
+	public int getMaxCount() {
+		return maxCount;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
+	public void setMaxCount(int maxCount) {
+		this.maxCount = maxCount;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "creatorId")
+	public YUser getCreator() {
+		return creator;
+	}
+
+	public void setCreator(YUser creator) {
+		this.creator = creator;
 	}
 
 	@Override
-	public String toString() {
-		return "YActivity [id=" + id + ", creator=" + creator + ", title="
-				+ title + ", introduce=" + introduce + ", pictures=" + pictures
-				+ ", labels=" + labels + ", createTimeDate=" + createTimeDate
-				+ ", beginTime=" + beginTime + ", endTime=" + endTime
-				+ ", perCost=" + perCost + ", bulkLink=" + bulkLink
-				+ ", activityAddress=" + activityAddress + ", collectAddress="
-				+ collectAddress + ", activityAddressLongitude="
-				+ activityAddressLongitude + ", collectAddressLatitude="
-				+ collectAddressLatitude + ", count=" + count + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		YActivity other = (YActivity) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 }

@@ -1,9 +1,6 @@
 package com.gdufs.gd.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,9 +16,11 @@ public class TransferMessage extends BaseEntity implements Serializable {
 		super();
 	}
 
+	public TransferMessage(int code, String message, Map<?, ?> resultMap) {
+		super();
+	}
+
 	private int code;
-	private Date createTime;
-	private Date expire;
 	private String message;
 	private Map<?, ?> resultMap;
 
@@ -31,22 +30,6 @@ public class TransferMessage extends BaseEntity implements Serializable {
 
 	public void setCode(int code) {
 		this.code = code;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getExpire() {
-		return expire;
-	}
-
-	public void setExpire(Date expire) {
-		this.expire = expire;
 	}
 
 	public String getMessage() {
@@ -67,8 +50,7 @@ public class TransferMessage extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TransferMessage [code=" + code + ", createTime=" + createTime
-				+ ", expire=" + expire + ", message=" + message
+		return "TransferMessage [code=" + code + ", message=" + message
 				+ ", resultMap=" + resultMap + "]";
 	}
 

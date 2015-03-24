@@ -2,6 +2,7 @@ package com.gdufs.gd.common;
 
 public class CResponse {
 	public class Code {
+		public final static int NOEXCUTE = -1;
 		public final static int SUCCESS = 0;
 		public final static int REQUEST_ERROR = 1;
 		public final static int NETWORK_ERROR = 2;
@@ -11,11 +12,13 @@ public class CResponse {
 	}
 
 	public class Message {
+		public final static String NOEXCUTE = "no process current request";
 		public final static String SUCCESS = "Execute successfully";
 		public final static String REQUEST_ERROR = "Request occured error";
 		public final static String NETWORK_ERROR = "NetWork occured error";
 		public final static String UNKNOWN_ERROR = "Unknown error";
 		public final static String ERROR = "Execute occured error";
 		public final static String NOT_FUND = "Resource not found";
+		public final static String REGIST_CODE_TIME_OUT = "regist code over time，please get code again";
 	}
 }

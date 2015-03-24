@@ -5,6 +5,13 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<!-- 配置springMVC处理上传文件的信息 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="maxUploadSize" value="10485760000"></property>
+		<property name="maxInMemorySize" value="40960"></property>
+	</bean>
+	
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -31,12 +38,25 @@
 		<!-- 注解domain类  -->
 		<property name="annotatedClasses">
 			<list>
+			  
 				<value>com.gdufs.gd.entity.YUser</value>
 				<value>com.gdufs.gd.entity.YActivity</value>
+				<value>com.gdufs.gd.entity.YActivityUserPK</value>
+				<value>com.gdufs.gd.entity.YActivityUser</value>
+				<!-- 
+				<value>test.OrderItemPK</value>
+				<value>test.OrderItem</value>
+				<value>test.Order</value>
+				<value>test.Product</value>
+				
+				-->
+			
+				<!--
 				<value>com.gdufs.gd.entity.YPicture</value>
 				<value>com.gdufs.gd.entity.YLabel</value>
-				<value>com.gdufs.gd.entity.YActivityJoiner</value>	
-				<value>com.gdufs.gd.entity.YContact</value>									
+				<value>com.gdufs.gd.entity.YContact</value>	
+				<value>com.gdufs.gd.entity.YRelation</value>	
+				-->						
 			</list>
 		</property>
 	</bean>  
