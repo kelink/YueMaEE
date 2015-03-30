@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gdufs.gd.dao.YContactDao;
-import com.gdufs.gd.entity2.YContact;
+import com.gdufs.gd.entity.YContact;
 import com.gdufs.gd.service.YContactService;
 
 @Service(value = "contactService")

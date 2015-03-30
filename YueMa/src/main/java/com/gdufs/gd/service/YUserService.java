@@ -7,7 +7,7 @@ import com.gdufs.gd.entity.YUser;
 
 public interface YUserService {
 	public TransferMessage register(YUser user, HttpSession session,
-			String registerCode);
+			String registerCode, String phoneNum);
 
 	public boolean login(YUser user);
 }

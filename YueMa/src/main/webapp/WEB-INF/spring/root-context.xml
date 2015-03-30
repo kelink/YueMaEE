@@ -43,20 +43,18 @@
 				<value>com.gdufs.gd.entity.YActivity</value>
 				<value>com.gdufs.gd.entity.YActivityUserPK</value>
 				<value>com.gdufs.gd.entity.YActivityUser</value>
-				<!-- 
-				<value>test.OrderItemPK</value>
-				<value>test.OrderItem</value>
-				<value>test.Order</value>
-				<value>test.Product</value>
-				
-				-->
-			
-				<!--
-				<value>com.gdufs.gd.entity.YPicture</value>
-				<value>com.gdufs.gd.entity.YLabel</value>
 				<value>com.gdufs.gd.entity.YContact</value>	
-				<value>com.gdufs.gd.entity.YRelation</value>	
-				-->						
+				<value>com.gdufs.gd.entity.YRelationSecond</value>	
+				<value>com.gdufs.gd.entity.YBulletin</value>	
+				<value>com.gdufs.gd.entity.YBulletinUser</value>
+				<value>com.gdufs.gd.entity.YComment</value>
+				<value>com.gdufs.gd.entity.YRemind</value>
+				<value>com.gdufs.gd.entity.YRemindUser</value>	
+				<value>com.gdufs.gd.entity.YRemindUserPK</value>	
+				<value>com.gdufs.gd.entity.YMessage</value>
+				<value>com.gdufs.gd.entity.YMessageUser</value>	
+				<value>com.gdufs.gd.entity.YMessageUserPK</value>				
+							
 			</list>
 		</property>
 	</bean>  

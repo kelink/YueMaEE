@@ -2,7 +2,7 @@ package com.gdufs.gd.service;
 
 import java.util.List;
 
-import com.gdufs.gd.entity2.YContact;
+import com.gdufs.gd.entity.YContact;
 
 public interface YContactService {
 	public boolean addAContact(YContact contactObj);

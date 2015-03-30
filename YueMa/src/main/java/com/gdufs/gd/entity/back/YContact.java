@@ -1,4 +1,4 @@
-package com.gdufs.gd.entity2;
+package com.gdufs.gd.entity.back;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Contact object
+ * 用户联系表，也是一度人脉表
  * 
  * @author Administrator
  *

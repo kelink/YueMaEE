@@ -12,13 +12,17 @@ public class CResponse {
 	}
 
 	public class Message {
+		// regist
+		public final static String REGIST_ERROR_PARMANTS = "error parmant";
+		public final static String REGIST_CODE_TIME_OUT = "code over time, please get regist code again";
+		public final static String REGIST_DB_ERROR = "regist in database error";
 		public final static String NOEXCUTE = "no process current request";
 		public final static String SUCCESS = "Execute successfully";
 		public final static String REQUEST_ERROR = "Request occured error";
 		public final static String NETWORK_ERROR = "NetWork occured error";
 		public final static String UNKNOWN_ERROR = "Unknown error";
-		public final static String ERROR = "Execute occured error";
-		public final static String NOT_FUND = "Resource not found";
-		public final static String REGIST_CODE_TIME_OUT = "regist code over time，please get code again";
+		public final static String ERROR = "执行错误";
+		public final static String NOT_FUND = "404 NOT Fund";
+
 	}
 }

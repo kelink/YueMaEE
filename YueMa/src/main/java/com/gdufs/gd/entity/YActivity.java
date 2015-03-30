@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,59 +20,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "YActivity")
 public class YActivity implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String name;
 	private double price;
-
 	private Set<YActivityUser> activityUsers;
-
 	private YUser creator;// 创建者
-
-	@Column(name = "title", length = 50, nullable = false)
 	private String title;// 活动的title或者name
-
-	@Column(name = "introduce", length = 100, nullable = false)
 	private String introduce;// 活动的简介
-
-	@Column(name = "createTimeDate", length = 50, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date createTimeDate;// 活动创建日期
-
-	@Column(name = "beginTime", length = 50, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date beginTime;// 活动开始时间
-
-	@Column(name = "endTime", length = 50, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date endTime;// 活动结束时间
-
-	@Column(name = "perCost", length = 20, nullable = false)
 	private float perCost;// 活动预期花费每个人
-
-	@Column(name = "bulkLink", length = 100, nullable = false)
 	private String bulkLink;// 团购链接
-
-	@Column(name = "activityAddress", length = 100, nullable = false)
 	private String activityAddress;// 活动地点
-
-	@Column(name = "collectAddress", length = 100, nullable = false)
 	private String collectAddress;
-
-	@Column(name = "activityAddressLongitude", length = 50, nullable = false)
 	private String activityAddressLongitude;// 经度
-
-	@Column(name = "activityAddressLatitude", length = 50, nullable = false)
 	private String activityAddressLatitude;// 纬度
-
-	@Column(name = "collectAddressLongitude", length = 50, nullable = false)
 	private String collectAddressLongitude;// 纬度
-
-	@Column(name = "collectAddressLatitude", length = 50, nullable = false)
 	private String collectAddressLatitude;// 纬度
-
-	@Column(name = "maxCount", length = 11, nullable = false)
 	private int maxCount;
 
 	@Id
@@ -87,14 +51,7 @@ public class YActivity implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	@Column(name = "price", length = 50, nullable = false)
 	public double getPrice() {
 		return price;
 	}
@@ -112,6 +69,7 @@ public class YActivity implements Serializable {
 		this.activityUsers = activityUsers;
 	}
 
+	@Column(name = "title", length = 50, nullable = false)
 	public String getTitle() {
 		return title;
 	}
@@ -120,6 +78,7 @@ public class YActivity implements Serializable {
 		this.title = title;
 	}
 
+	@Column(name = "introduce", length = 100, nullable = false)
 	public String getIntroduce() {
 		return introduce;
 	}
@@ -128,6 +87,8 @@ public class YActivity implements Serializable {
 		this.introduce = introduce;
 	}
 
+	@Column(name = "createTimeDate", length = 50, nullable = false)
+	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getCreateTimeDate() {
 		return createTimeDate;
 	}
@@ -136,6 +97,8 @@ public class YActivity implements Serializable {
 		this.createTimeDate = createTimeDate;
 	}
 
+	@Column(name = "beginTime", length = 50, nullable = false)
+	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -144,6 +107,8 @@ public class YActivity implements Serializable {
 		this.beginTime = beginTime;
 	}
 
+	@Column(name = "endTime", length = 50, nullable = false)
+	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -152,6 +117,7 @@ public class YActivity implements Serializable {
 		this.endTime = endTime;
 	}
 
+	@Column(name = "perCost", length = 20, nullable = false)
 	public float getPerCost() {
 		return perCost;
 	}
@@ -160,6 +126,7 @@ public class YActivity implements Serializable {
 		this.perCost = perCost;
 	}
 
+	@Column(name = "bulkLink", length = 100, nullable = false)
 	public String getBulkLink() {
 		return bulkLink;
 	}
@@ -168,6 +135,7 @@ public class YActivity implements Serializable {
 		this.bulkLink = bulkLink;
 	}
 
+	@Column(name = "activityAddress", length = 100, nullable = false)
 	public String getActivityAddress() {
 		return activityAddress;
 	}
@@ -176,6 +144,7 @@ public class YActivity implements Serializable {
 		this.activityAddress = activityAddress;
 	}
 
+	@Column(name = "collectAddress", length = 100, nullable = false)
 	public String getCollectAddress() {
 		return collectAddress;
 	}
@@ -184,6 +153,7 @@ public class YActivity implements Serializable {
 		this.collectAddress = collectAddress;
 	}
 
+	@Column(name = "activityAddressLongitude", length = 50, nullable = false)
 	public String getActivityAddressLongitude() {
 		return activityAddressLongitude;
 	}
@@ -192,6 +162,7 @@ public class YActivity implements Serializable {
 		this.activityAddressLongitude = activityAddressLongitude;
 	}
 
+	@Column(name = "activityAddressLatitude", length = 50, nullable = false)
 	public String getActivityAddressLatitude() {
 		return activityAddressLatitude;
 	}
@@ -200,6 +171,7 @@ public class YActivity implements Serializable {
 		this.activityAddressLatitude = activityAddressLatitude;
 	}
 
+	@Column(name = "collectAddressLongitude", length = 50, nullable = false)
 	public String getCollectAddressLongitude() {
 		return collectAddressLongitude;
 	}
@@ -208,6 +180,7 @@ public class YActivity implements Serializable {
 		this.collectAddressLongitude = collectAddressLongitude;
 	}
 
+	@Column(name = "collectAddressLatitude", length = 50, nullable = false)
 	public String getCollectAddressLatitude() {
 		return collectAddressLatitude;
 	}
@@ -216,6 +189,7 @@ public class YActivity implements Serializable {
 		this.collectAddressLatitude = collectAddressLatitude;
 	}
 
+	@Column(name = "maxCount", length = 11, nullable = false)
 	public int getMaxCount() {
 		return maxCount;
 	}

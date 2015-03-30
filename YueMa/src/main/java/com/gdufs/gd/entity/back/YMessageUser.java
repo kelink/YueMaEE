@@ -1,4 +1,4 @@
-package com.gdufs.gd.entity2;
+package com.gdufs.gd.entity.back;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.gdufs.gd.entity2;
+package com.gdufs.gd.entity.back;
 
 import java.util.Date;
 
@@ -7,12 +7,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class YRemind {
+/**
+ * 公告-用户类
+ * 
+ * @author Administrator
+ *
+ */
+public class YBulletinUser {
 
-	public YRemind() {
+	public YBulletinUser() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,17 +26,13 @@ public class YRemind {
 	@Column(name = "id", length = 11, nullable = false)
 	private int id;
 
-	@Column(name = "type", length = 11, nullable = false)
-	private int type;
+	@Column(name = "userId", length = 11, nullable = false)
+	private int userId;
 
-	@Column(name = "creatorId", length = 11, nullable = false)
-	private int creatorId;
+	@Column(name = "isRead", length = 11, nullable = false)
+	private int isRead;
 
-	@Type(type = "text")
-	@Column(name = "content", nullable = false)
-	private String content;
-
-	@Column(name = "createTime", length = 11, nullable = false)
+	@Column(name = "readTime", length = 11, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
-	private Date createTime;
+	private Date readTime;
 }

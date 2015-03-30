@@ -1,7 +1,6 @@
 package com.gdufs.gd.entity;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -15,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -22,45 +22,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class YUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private Calendar date;
 	private Set<YActivityUser> activityUsers;
-
+	private Set<YBulletinUser> bulletinUsers;
 	private Set<YActivity> activities;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = YActivity.class)
-	@JoinColumn(name = "creatorId")
-	public Set<YActivity> getActivities() {
-		return activities;
-	}
-
-	public void setActivities(Set<YActivity> activities) {
-		this.activities = activities;
-	}
-
-	@Column(name = "nickName", length = 20, nullable = false)
+	private Set<YMessageUser> messageUsers;
+	private Set<YRemindUser> remindUsers;
 	private String nickName;
-
-	@Column(length = 13, nullable = false)
 	private String phoneNumber;
-
-	@Column(length = 100, nullable = false)
 	private String password;
-
-	@Column(length = 50, nullable = false)
 	private String facePath;
-
-	@Column(length = 20, nullable = false)
 	private String introduce;
-
-	@Column(length = 50, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date createTime;
-
-	@Column(length = 50, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date lastLoginTimeDate;
-
-	@Column(length = 50, nullable = false)
 	private String lastLoginIp;
 
 	@Id
@@ -74,14 +47,6 @@ public class YUser implements Serializable {
 		this.id = id;
 	}
 
-	public Calendar getDate() {
-		return date;
-	}
-
-	public void setDate(Calendar date) {
-		this.date = date;
-	}
-
 	@OneToMany(mappedBy = "user")
 	public Set<YActivityUser> getActivityUsers() {
 		return activityUsers;
@@ -91,6 +56,34 @@ public class YUser implements Serializable {
 		this.activityUsers = activityUsers;
 	}
 
+	@OneToMany(mappedBy = "user")
+	public Set<YBulletinUser> getBulletinUsers() {
+		return bulletinUsers;
+	}
+
+	public void setBulletinUsers(Set<YBulletinUser> bulletinUsers) {
+		this.bulletinUsers = bulletinUsers;
+	}
+
+	@OneToMany(mappedBy = "user")
+	public Set<YMessageUser> getMessageUsers() {
+		return messageUsers;
+	}
+
+	public void setMessageUsers(Set<YMessageUser> messageUsers) {
+		this.messageUsers = messageUsers;
+	}
+
+	@OneToMany(mappedBy = "user")
+	public Set<YRemindUser> getRemindUsers() {
+		return remindUsers;
+	}
+
+	public void setRemindUsers(Set<YRemindUser> remindUsers) {
+		this.remindUsers = remindUsers;
+	}
+
+	@Column(name = "nickName", length = 20, nullable = false)
 	public String getNickName() {
 		return nickName;
 	}
@@ -99,6 +92,7 @@ public class YUser implements Serializable {
 		this.nickName = nickName;
 	}
 
+	@Column(length = 13, nullable = false)
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -107,6 +101,7 @@ public class YUser implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	@Column(length = 100, nullable = false)
 	public String getPassword() {
 		return password;
 	}
@@ -115,6 +110,7 @@ public class YUser implements Serializable {
 		this.password = password;
 	}
 
+	@Column(length = 50)
 	public String getFacePath() {
 		return facePath;
 	}
@@ -123,6 +119,7 @@ public class YUser implements Serializable {
 		this.facePath = facePath;
 	}
 
+	@Column(length = 20)
 	public String getIntroduce() {
 		return introduce;
 	}
@@ -131,6 +128,8 @@ public class YUser implements Serializable {
 		this.introduce = introduce;
 	}
 
+	@Column(length = 50, nullable = false)
+	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -139,6 +138,8 @@ public class YUser implements Serializable {
 		this.createTime = createTime;
 	}
 
+	@Column(length = 50)
+	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getLastLoginTimeDate() {
 		return lastLoginTimeDate;
 	}
@@ -147,12 +148,23 @@ public class YUser implements Serializable {
 		this.lastLoginTimeDate = lastLoginTimeDate;
 	}
 
+	@Column(length = 50)
 	public String getLastLoginIp() {
 		return lastLoginIp;
 	}
 
 	public void setLastLoginIp(String lastLoginIp) {
 		this.lastLoginIp = lastLoginIp;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = YActivity.class)
+	@JoinColumn(name = "creatorId")
+	public Set<YActivity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(Set<YActivity> activities) {
+		this.activities = activities;
 	}
 
 	public int hashCode() {

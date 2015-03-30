@@ -2,9 +2,6 @@ package com.gdufs.gd.serviceImpl;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Pattern.Flag;
-
-import org.hamcrest.core.Is;
 import org.springframework.stereotype.Service;
 
 import com.gdufs.gd.common.CResponse;
@@ -21,10 +18,10 @@ public class YUserServiceImpl implements YUserService {
 
 	@Override
 	public TransferMessage register(YUser user, HttpSession session,
-			String registerCode) {
+			String registerCode, String phoneNum) {
 		TransferMessage message = new TransferMessage();
 		// 判断注册码是否过期
-		if (validRegistCode(session, registerCode)) {
+		if (!validRegistCode(session, registerCode, phoneNum)) {
 			message.setCode(CResponse.Code.ERROR);
 			message.setMessage(CResponse.Message.REGIST_CODE_TIME_OUT);
 			message.setResultMap(null);
@@ -35,7 +32,7 @@ public class YUserServiceImpl implements YUserService {
 				message.setResultMap(null);
 			} else {
 				message.setCode(CResponse.Code.ERROR);
-				message.setMessage(CResponse.Message.ERROR);
+				message.setMessage(CResponse.Message.REGIST_DB_ERROR);
 				message.setResultMap(null);
 			}
 		}
@@ -43,15 +40,20 @@ public class YUserServiceImpl implements YUserService {
 	}
 
 	// 验证注册码
-	private boolean validRegistCode(HttpSession session, String registerCode) {
-		String phoneNum = (String) session.getAttribute("phoneNum");
+	private boolean validRegistCode(HttpSession session, String registerCode,
+			String phoneNum) {
+		String seeesionTime = (String) session.getAttribute(phoneNum);
 		if (phoneNum == null || phoneNum.equals("")) {
 			return false;
 		}
-		String[] parms = phoneNum.split("-");
+		String[] parms = seeesionTime.split("-");
+		if (System.currentTimeMillis() - Long.parseLong(parms[0]) > (1000 * 60)) {
+			return false;
+		}
 		if (!registerCode.equals(parms[1])) {
 			return false;
 		}
+
 		return true;
 
 	}

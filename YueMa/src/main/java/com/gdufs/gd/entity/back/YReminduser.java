@@ -1,4 +1,4 @@
-package com.gdufs.gd.entity2;
+package com.gdufs.gd.entity.back;
 
 import java.util.Date;
 
@@ -9,15 +9,9 @@ import javax.persistence.Id;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * 公告-用户类
- * 
- * @author Administrator
- *
- */
-public class YBulletinUser {
+public class YReminduser {
 
-	public YBulletinUser() {
+	public YReminduser() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,10 +23,14 @@ public class YBulletinUser {
 	@Column(name = "userId", length = 11, nullable = false)
 	private int userId;
 
+	@Column(name = "remindId", length = 11, nullable = false)
+	private int remindId;
+
 	@Column(name = "isRead", length = 11, nullable = false)
 	private int isRead;
 
 	@Column(name = "readTime", length = 11, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	private Date readTime;
+
 }
