@@ -89,7 +89,7 @@ public class YBulletin implements Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "createTime", length = 11, nullable = false)
+	@Column(name = "createTime", length = 30, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
 	public Date getCreateTime() {
 		return createTime;

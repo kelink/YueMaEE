@@ -7,7 +7,7 @@ public interface YUserDao {
 
 	public boolean update(YUser user);
 
-	public YUser queryById(int id);
+	public YUser getUserById(int id);
 
 	public boolean delete(YUser user);
 

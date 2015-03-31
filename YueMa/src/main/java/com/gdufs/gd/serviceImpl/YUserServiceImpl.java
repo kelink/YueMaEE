@@ -64,4 +64,9 @@ public class YUserServiceImpl implements YUserService {
 		return false;
 	}
 
+	@Override
+	public YUser getUserById(int id) {
+		return userDao.getUserById(id);
+	}
+
 }

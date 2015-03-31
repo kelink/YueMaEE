@@ -1,5 +1,7 @@
 package com.gdufs.gd.dao;
 
+import java.util.List;
+
 import com.gdufs.gd.entity.YActivity;
 
 public interface YActivityDao {
@@ -7,7 +9,9 @@ public interface YActivityDao {
 
 	public boolean update(YActivity activity);
 
-	public YActivity queryById(int id);
+	public YActivity getActivityByActivityId(int aId);
 
-	public boolean delete(YActivity activity);
+	public List<YActivity> getActivityByCreatorId(int uId);
+
+	public boolean delete(int activityId);
 }

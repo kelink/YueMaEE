@@ -2,11 +2,12 @@ package com.gdufs.gd.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -22,15 +25,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class YActivity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private double price;
-	private Set<YActivityUser> activityUsers;
+	private Set<YActivityUser> activityUsers = new HashSet<YActivityUser>();
 	private YUser creator;// 创建者
 	private String title;// 活动的title或者name
 	private String introduce;// 活动的简介
 	private Date createTimeDate;// 活动创建日期
 	private Date beginTime;// 活动开始时间
 	private Date endTime;// 活动结束时间
-	private float perCost;// 活动预期花费每个人
+	private double perCost;// 活动预期花费每个人
 	private String bulkLink;// 团购链接
 	private String activityAddress;// 活动地点
 	private String collectAddress;
@@ -51,16 +53,11 @@ public class YActivity implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "price", length = 50, nullable = false)
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	@OneToMany(mappedBy = "activity")
+	// @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch =
+	// FetchType.LAZY)
+	@OneToMany(mappedBy = "activity", targetEntity = YActivityUser.class, fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE_ORPHAN,
+			CascadeType.ALL })
 	public Set<YActivityUser> getActivityUsers() {
 		return activityUsers;
 	}
@@ -118,11 +115,11 @@ public class YActivity implements Serializable {
 	}
 
 	@Column(name = "perCost", length = 20, nullable = false)
-	public float getPerCost() {
+	public double getPerCost() {
 		return perCost;
 	}
 
-	public void setPerCost(float perCost) {
+	public void setPerCost(double perCost) {
 		this.perCost = perCost;
 	}
 
@@ -198,7 +195,7 @@ public class YActivity implements Serializable {
 		this.maxCount = maxCount;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "creatorId")
 	public YUser getCreator() {
 		return creator;
@@ -229,4 +226,20 @@ public class YActivity implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "YActivity [id=" + id + ", activityUsers=" + activityUsers
+				+ ", creator=" + creator + ", title=" + title + ", introduce="
+				+ introduce + ", createTimeDate=" + createTimeDate
+				+ ", beginTime=" + beginTime + ", endTime=" + endTime
+				+ ", perCost=" + perCost + ", bulkLink=" + bulkLink
+				+ ", activityAddress=" + activityAddress + ", collectAddress="
+				+ collectAddress + ", activityAddressLongitude="
+				+ activityAddressLongitude + ", activityAddressLatitude="
+				+ activityAddressLatitude + ", collectAddressLongitude="
+				+ collectAddressLongitude + ", collectAddressLatitude="
+				+ collectAddressLatitude + ", maxCount=" + maxCount + "]";
+	}
+
 }

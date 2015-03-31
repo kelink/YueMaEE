@@ -10,4 +10,6 @@ public interface YUserService {
 			String registerCode, String phoneNum);
 
 	public boolean login(YUser user);
+
+	public YUser getUserById(int id);
 }

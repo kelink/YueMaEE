@@ -1,10 +1,13 @@
 package com.gdufs.gd;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.gdufs.gd.util.UploadUtil;
@@ -32,11 +35,14 @@ public class UploadController {
 	 * springMVC封装的解析request上传文件（快捷、与springMVC很好结合，首选）
 	 */
 	@RequestMapping("/upload2")
+	@ResponseBody
 	public String uploadFile2(@RequestParam("file") CommonsMultipartFile file,
 			HttpServletRequest request) throws IOException {
-		System.out.println(new UploadUtil().uploadFiles(file, request)
-				.toString());
-		return "/success";
+		String defaultPath = request.getSession().getServletContext()
+				.getRealPath("upload/img/");
+		System.out.println(new UploadUtil(defaultPath).uploadFiles(file,
+				request).toString());
+		return defaultPath;
 	}
 
 }

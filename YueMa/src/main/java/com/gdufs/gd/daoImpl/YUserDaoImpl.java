@@ -1,5 +1,6 @@
 package com.gdufs.gd.daoImpl;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
@@ -49,15 +50,18 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 	}
 
 	@Override
-	public YUser queryById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean delete(YUser user) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Override
+	public YUser getUserById(int id) {
+		Session session = this.getSession();
+		String hql = "from YUser where id=?";
+		Query query = session.createQuery(hql);
+		query.setParameter(0, id);
+		YUser user = (YUser) query.uniqueResult();
+		return user;
+	}
 }
