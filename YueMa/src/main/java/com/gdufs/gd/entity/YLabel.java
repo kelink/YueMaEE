@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +24,7 @@ public class YLabel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String content;
+	private YActivity activity;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +44,15 @@ public class YLabel implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+	@ManyToOne
+	@JoinColumn(name = "activityId")
+	public YActivity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(YActivity activity) {
+		this.activity = activity;
 	}
 
 }

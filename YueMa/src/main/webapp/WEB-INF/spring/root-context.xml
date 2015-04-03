@@ -26,9 +26,9 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-				 <!-- 按照更新模式进行数据库操作，需要改表结构是才用上面
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				 <!-- 按照更新模式进行数据库操作，需要改表结构是才用上面
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
 				 --> 
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
@@ -53,7 +53,8 @@
 				<value>com.gdufs.gd.entity.YRemindUserPK</value>	
 				<value>com.gdufs.gd.entity.YMessage</value>
 				<value>com.gdufs.gd.entity.YMessageUser</value>	
-				<value>com.gdufs.gd.entity.YMessageUserPK</value>				
+				<value>com.gdufs.gd.entity.YLabel</value>
+				<value>com.gdufs.gd.entity.YPicture</value>			
 							
 			</list>
 		</property>

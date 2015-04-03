@@ -61,7 +61,7 @@ public class HomeController {
 		HashMap<String, HashMap<String, String>> resultMap = new HashMap<String, HashMap<String, String>>();
 		resultMap.put("map1", map1);
 		resultMap.put("map2", map2);
-		msg.setCode(10000);
+		msg.setCode("10000");
 		msg.setMessage("test");
 		msg.setResultMap(resultMap);
 		return JacksonUtil.writeEntity2JSON(new String[] { "a", "b" });

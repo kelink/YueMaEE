@@ -7,9 +7,14 @@ public interface YUserDao {
 
 	public boolean update(YUser user);
 
+	public boolean getUserByNameAndPwd(String name,String pwd);
+	
 	public YUser getUserById(int id);
+	
+	public YUser getUserByPhone(String phoneNum);
 
 	public boolean delete(YUser user);
 
 	public boolean addYUser(YUser user);
+	
 }

@@ -12,6 +12,8 @@ public interface YActivityDao {
 	public YActivity getActivityByActivityId(int aId);
 
 	public List<YActivity> getActivityByCreatorId(int uId);
+	
+	public List<YActivity> getActivityByPage(int pageNum, int pageSize);
 
 	public boolean delete(int activityId);
 }

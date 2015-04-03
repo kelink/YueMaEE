@@ -13,8 +13,10 @@ public class CResponse {
 
 	public class Message {
 		// regist
-		public final static String REGIST_ERROR_PARMANTS = "error parmant";
-		public final static String REGIST_CODE_TIME_OUT = "code over time, please get regist code again";
+		public final static String REGIST_ERROR_PARMANTS = "error parmants";
+		public final static String REGIST_CODE_TIME_OUT = "please get regist code again";
+		public final static String REGIST_USER_EXIST = "User exist";
+		public final static String REGIST_CODE_ERROR = "Error regist code";
 		public final static String REGIST_DB_ERROR = "regist in database error";
 		public final static String NOEXCUTE = "no process current request";
 		public final static String SUCCESS = "Execute successfully";

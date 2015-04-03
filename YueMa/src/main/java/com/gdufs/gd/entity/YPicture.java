@@ -5,11 +5,18 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.ManyToAny;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -21,19 +28,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "YPicture")
 public class YPicture implements Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private Date uploaDate;
 	private String url;
+	private YActivity activity;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", length = 11, nullable = false)
+	@Column(length = 11, name = "id")
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -48,13 +55,23 @@ public class YPicture implements Serializable {
 		this.uploaDate = uploaDate;
 	}
 
-	@Column(name = "id", length = 250, nullable = false)
+	@Column(name = "url", length = 250, nullable = false)
 	public String getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "activityId")
+	public YActivity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(YActivity activity) {
+		this.activity = activity;
 	}
 
 }

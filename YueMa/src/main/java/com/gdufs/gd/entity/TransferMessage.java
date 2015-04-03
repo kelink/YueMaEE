@@ -20,15 +20,15 @@ public class TransferMessage extends BaseEntity implements Serializable {
 		super();
 	}
 
-	private int code;
+	private String code;
 	private String message;
-	private Map<?, ?> resultMap;
+	private Map<String, ?> resultMap;
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
@@ -44,7 +44,7 @@ public class TransferMessage extends BaseEntity implements Serializable {
 		return resultMap;
 	}
 
-	public void setResultMap(Map<?, ?> resultMap) {
+	public void setResultMap(Map<String, ?> resultMap) {
 		this.resultMap = resultMap;
 	}
 

@@ -36,7 +36,7 @@ public class UploadUtil {
 
 	/**
 	 * 解析request 获取文件 依赖于common-io和common-upload 这两个包 支持多文件上传
-	 * 
+	 * 实现多文件上传	
 	 * 返回文件对应的存储位置
 	 * 
 	 * @param file
@@ -59,25 +59,6 @@ public class UploadUtil {
 				while (it.hasNext()) {
 					// 获取MultipartFile类型文件
 					MultipartFile fileDetail = multiRequest.getFile(it.next());
-					// if (fileDetail != null) {
-					// String fileName = "demoUpload"
-					// + fileDetail.getOriginalFilename();
-					// String path = "D:/" + fileName;
-					// File localFile = new File(path);
-					// // 将上传文件写入到指定文件出、核心！
-					// try {
-					// fileDetail.transferTo(localFile);
-					// } catch (IllegalStateException e) {
-					// // TODO Auto-generated catch block
-					// e.printStackTrace();
-					// } catch (IOException e) {
-					// // TODO Auto-generated catch block
-					// e.printStackTrace();
-					// }
-					// // 非常重要、有了这个想做什么处理都可以
-					// // fileDetail.getInputStream();
-					// }
-
 					if (fileDetail != null) {
 						String fileName = generateFileName()
 								+ fileDetail.getOriginalFilename();

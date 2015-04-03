@@ -1,4 +1,4 @@
-package com.gdufs.gd.daoImpl;
+ package com.gdufs.gd.daoImpl;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -63,5 +63,30 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 		query.setParameter(0, id);
 		YUser user = (YUser) query.uniqueResult();
 		return user;
+	}
+
+	@Override
+	public YUser getUserByPhone(String phoneNum) {
+		Session session = this.getSession();
+		String hql = "from YUser where phoneNumber=?";
+		Query query = session.createQuery(hql);
+		query.setParameter(0, phoneNum);
+		YUser user = (YUser) query.uniqueResult();
+		return user;
+	}
+
+	@Override
+	public boolean getUserByNameAndPwd(String phoneNum,String pwd) {
+		Session session = this.getSession();
+		String hql = "from YUser where phoneNumber=? and password=?";
+		Query query = session.createQuery(hql);
+		query.setParameter(0, phoneNum);
+		query.setParameter(1, pwd);
+		YUser user = (YUser) query.uniqueResult();
+		if (user!=null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

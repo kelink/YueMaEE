@@ -1,22 +1,17 @@
 package com.gdufs.gd.daoImpl;
-
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.CreateKeySecondPass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import com.gdufs.gd.dao.YActivityDao;
 import com.gdufs.gd.entity.YActivity;
 import com.gdufs.gd.entity.YActivityUser;
-import com.gdufs.gd.entity.YUser;
-import com.mchange.v2.uid.UidUtils;
+import com.gdufs.gd.entity.YLabel;
+import com.gdufs.gd.entity.YPicture;
 
 @Repository(value = "activityDao")
 public class YActivityDaoImpl extends BaseDao implements YActivityDao {
@@ -32,15 +27,20 @@ public class YActivityDaoImpl extends BaseDao implements YActivityDao {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			// 同时插入参与表信息
-			YActivityUser activityUser = new YActivityUser();
-			activityUser.setActivity(activity);
-			activityUser.setUser(activity.getCreator());
-			activityUser.setIsAuth(1);
-			activityUser.setIsTickOff(0);
-			activityUser.setJoin_time(new Date());
+			//插入图片
+			for (YPicture picture : activity.getPictures()) {
+				session.save(picture);
+			}
+			//插入标签
+			for (YLabel label : activity.getLabels()) {
+				session.save(label);
+			}
+			//插入活动
 			session.save(activity);
-			session.save(activityUser);
+			//插入活动参与者
+			for (YActivityUser activityUser : activity.getActivityUsers()) {
+				session.save(activityUser);
+			}
 			session.flush();
 			tx.commit();
 			return true;
@@ -108,5 +108,17 @@ public class YActivityDaoImpl extends BaseDao implements YActivityDao {
 			logger.error("Add activity error" + ex.getMessage());
 			return false;
 		}
+	}
+
+	@Override
+	public List<YActivity> getActivityByPage(int pageNum, int pageSize) {
+		String hql = "from YActivity activity";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		int offSet = (pageNum - 1) * pageSize >= 0
+				? (pageNum - 1) * pageSize
+				: 0;
+		query.setFirstResult(offSet);
+		query.setMaxResults(pageSize);
+		return query.list();
 	}
 }

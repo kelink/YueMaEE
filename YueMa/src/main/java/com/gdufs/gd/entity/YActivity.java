@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,6 +25,8 @@ public class YActivity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private Set<YActivityUser> activityUsers = new HashSet<YActivityUser>();
+	private Set<YPicture> pictures;//该活动的图片
+	private Set<YLabel> labels;//活动所带的标签
 	private YUser creator;// 创建者
 	private String title;// 活动的title或者name
 	private String introduce;// 活动的简介
@@ -53,11 +54,8 @@ public class YActivity implements Serializable {
 		this.id = id;
 	}
 
-	// @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch =
-	// FetchType.LAZY)
-	@OneToMany(mappedBy = "activity", targetEntity = YActivityUser.class, fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE_ORPHAN,
-			CascadeType.ALL })
+	 @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch =
+	 FetchType.LAZY)
 	public Set<YActivityUser> getActivityUsers() {
 		return activityUsers;
 	}
@@ -203,6 +201,25 @@ public class YActivity implements Serializable {
 
 	public void setCreator(YUser creator) {
 		this.creator = creator;
+	}
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = YPicture.class)
+	@JoinColumn(name = "activityId")
+	public Set<YPicture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<YPicture> pictures) {
+		this.pictures = pictures;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = YLabel.class)
+	@JoinColumn(name = "activityId")
+	public Set<YLabel> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Set<YLabel> labels) {
+		this.labels = labels;
 	}
 
 	@Override
