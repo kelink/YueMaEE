@@ -30,6 +30,8 @@ public class C {
 		public final static String UNKNOWN_ERROR = "Unknown error";
 		public final static String ERROR = "execute error";
 		public final static String NOT_FUND = "404 NOT Fund";
+		//登陆
+		public final static String WRONG_USER_INFO = "wrong username or password";
 	}
 
 }

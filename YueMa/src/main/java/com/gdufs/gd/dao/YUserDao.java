@@ -7,7 +7,7 @@ public interface YUserDao {
 
 	public boolean update(YUser user);
 
-	public boolean getUserByNameAndPwd(String name,String pwd);
+	public YUser getUserByNameAndPwd(String name,String pwd);
 	
 	public YUser getUserById(int id);
 	

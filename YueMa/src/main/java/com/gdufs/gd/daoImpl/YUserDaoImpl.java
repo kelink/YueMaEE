@@ -76,17 +76,12 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 	}
 
 	@Override
-	public boolean getUserByNameAndPwd(String phoneNum,String pwd) {
+	public YUser getUserByNameAndPwd(String phoneNum,String pwd) {
 		Session session = this.getSession();
 		String hql = "from YUser where phoneNumber=? and password=?";
 		Query query = session.createQuery(hql);
 		query.setParameter(0, phoneNum);
 		query.setParameter(1, pwd);
-		YUser user = (YUser) query.uniqueResult();
-		if (user!=null) {
-			return true;
-		}else {
-			return false;
-		}
+		return  (YUser) query.uniqueResult();		
 	}
 }
