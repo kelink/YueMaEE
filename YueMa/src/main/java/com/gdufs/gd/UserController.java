@@ -40,16 +40,15 @@ public class UserController {
 		 YUser user=new YUser();
 		 user.setPhoneNumber(phoneNum);
 		 user.setPassword(pwd);
-		 if ( userService.login(user)) {
+		 if (userService.login(user)) {
 			 message.setCode(C.ResponseCode.SUCCESS);
-			 message.setMessage(C.ResponseCode.SUCCESS);
+			 message.setMessage(C.ResponseMessage.SUCCESS);
 			 message.setResultMap(null);
 		}else {
-			message.setCode(C.ResponseCode.SUCCESS);
-			message.setMessage(C.ResponseCode.SUCCESS);
+			message.setCode(C.ResponseCode.ERROR);
+			message.setMessage(C.ResponseMessage.WRONG_USER_INFO);
 			message.setResultMap(null);
-		}
-		       
+		}       
 		 return JacksonUtil.writeEntity2JSON(message);
 	  }
 	
@@ -134,20 +133,50 @@ public class UserController {
 	@ResponseBody
 	public String getRegisterCode(@RequestParam(C.ParamsName.PHONE_NUM) String phoneNum,
 			 HttpSession session) {
-		//设置验证码
-		String codeString = String.valueOf(RandomUtils.getRandom(0, 999999));
-		long time = System.currentTimeMillis();
-		session.setAttribute(phoneNum, time + "-" + codeString);
-		System.out.println(session.getAttribute(phoneNum));
-		//返回消息
-		Map<String, String> result=new HashMap<String, String>();
-		result.put(C.ParamsName.REGIST_CODE, codeString);
 		TransferMessage message = new TransferMessage();
-		message.setCode(C.ResponseCode.SUCCESS);
-		message.setMessage(C.ResponseMessage.SUCCESS);
-		message.setResultMap(result);	
+		//是否已经注册
+		if (userService.getUserByPhone(phoneNum)!=null) {
+			message.setCode(C.ResponseCode.ERROR);
+			message.setMessage(CResponse.Message.REGIST_USER_EXIST);
+			message.setResultMap(null);
+		}else{
+			//设置验证码
+			String codeString = String.valueOf(RandomUtils.getRandom(0, 999999));
+			long time = System.currentTimeMillis();
+			session.setAttribute(phoneNum, time + "-" + codeString);
+			System.out.println(session.getAttribute(phoneNum));
+			//返回消息
+			Map<String, String> result=new HashMap<String, String>();
+			result.put(C.ParamsName.REGIST_CODE, codeString);
+			message.setCode(C.ResponseCode.SUCCESS);
+			message.setMessage(C.ResponseMessage.SUCCESS);
+			message.setResultMap(result);	
+		}
 		return JacksonUtil.writeEntity2JSON(message);
 	}
+	
+	
+	/**
+	 * 判断用户是否已经注册
+	 * @param phoneNum
+	 * @return
+	 */
+	@RequestMapping(value = "/isUserExist", method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public String isUserExist(@RequestParam(C.ParamsName.PHONE_NUM) String phoneNum){
+			TransferMessage message = new TransferMessage();
+			//是否已经注册
+			if (userService.getUserByPhone(phoneNum)!=null) {
+				message.setCode(C.ResponseCode.ERROR);
+				message.setMessage(CResponse.Message.REGIST_USER_EXIST);
+				message.setResultMap(null);
+			}else {
+				message.setCode(C.ResponseCode.SUCCESS);
+				message.setMessage(CResponse.Message.SUCCESS);
+				message.setResultMap(null);
+			}
+			return JacksonUtil.writeEntity2JSON(message);
+		}
 	
 	/**
 	 * 查找用户的所有相关信息（活动数，个人信息）

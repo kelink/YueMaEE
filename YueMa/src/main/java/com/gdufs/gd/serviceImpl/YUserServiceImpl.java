@@ -33,7 +33,12 @@ public class YUserServiceImpl implements YUserService {
 
 	@Override
 	public boolean login(YUser user) {	
-		return userDao.getUserByNameAndPwd(user.getPhoneNumber(), user.getPassword());
+		YUser temp= userDao.getUserByNameAndPwd(user.getPhoneNumber(), user.getPassword());
+		if (temp!=null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
