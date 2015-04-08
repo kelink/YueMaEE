@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -35,8 +36,7 @@ public class UploadUtil {
 	}
 
 	/**
-	 * 解析request 获取文件 依赖于common-io和common-upload 这两个包 支持多文件上传
-	 * 实现多文件上传	
+	 * 解析request 获取文件 依赖于common-io和common-upload 这两个包 支持多文件上传 实现多文件上传
 	 * 返回文件对应的存储位置
 	 * 
 	 * @param file
@@ -45,39 +45,50 @@ public class UploadUtil {
 	 * @throws IOException
 	 * @throws IllegalStateException
 	 */
-	public HashMap<String, String> uploadFiles(CommonsMultipartFile file,
-			HttpServletRequest request) {
-		HashMap<String, String> paths = new HashMap<String, String>();
-		if (!file.isEmpty()) {
-			// 定义解析器去解析request
-			CommonsMultipartResolver mutilpartResolver = new CommonsMultipartResolver(
-					request.getSession().getServletContext());
-			if (mutilpartResolver.isMultipart(request)) {
-				MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-				// 获取文件名
-				Iterator<String> it = multiRequest.getFileNames();
-				while (it.hasNext()) {
-					// 获取MultipartFile类型文件
-					MultipartFile fileDetail = multiRequest.getFile(it.next());
-					if (fileDetail != null) {
-						String fileName = generateFileName()
-								+ fileDetail.getOriginalFilename();
+	public HashMap<String, String> uploadFiles(HttpServletRequest request,
+			HttpServletResponse response) {
+		HashMap<String, String> paths = new HashMap<String, String>();// 保存文件的路径
+		// 创建一个通用的多部分解析器
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		// 判断 request 是否有文件上传,即多部分请求
+		if (multipartResolver.isMultipart(request)) {
+			// 转换成多部分request
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			// 取得request中的所有文件名
+			Iterator<String> iter = multiRequest.getFileNames();
+			while (iter.hasNext()) {
+				// 记录上传过程起始时的时间，用来计算上传时间
+				int pre = (int) System.currentTimeMillis();
+				// 取得上传文件
+				MultipartFile file = multiRequest.getFile(iter.next());
+				if (file != null) {
+					// 取得当前上传文件的文件名称
+					String myFileName = file.getOriginalFilename();
+					// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
+					if (myFileName.trim() != "") {
+						System.out.println(myFileName);
+						// 重命名上传后的文件名
+						String fileName = generateFileName() + myFileName;
+						// 定义上传路径
 						String path = defaultPath + fileName;
 						File localFile = new File(path);
 						try {
-							fileDetail.transferTo(localFile);
-							paths.put(fileDetail.getOriginalFilename(), path);
+							file.transferTo(localFile);
+							paths.put(myFileName, path);
 						} catch (IllegalStateException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						// 将上传文件写入到指定文件出、核心！
-						// 非常重要、有了这个想做什么处理都可以
-						// fileDetail.getInputStream();
+
 					}
 				}
+				// 记录上传该文件后的时间
+				int finaltime = (int) System.currentTimeMillis();
+				System.out.println(finaltime - pre);
 			}
+
 		}
 		return paths;
 	}

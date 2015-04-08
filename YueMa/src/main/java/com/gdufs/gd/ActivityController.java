@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -70,7 +71,9 @@ public class ActivityController {
 	// 发起活动
 	@RequestMapping(value = "/newActivity", method = RequestMethod.GET)
 	@ResponseBody
-	public String newActivity(final HttpServletRequest request,
+	public String newActivity(
+			final HttpServletRequest request,
+			final HttpServletResponse response,
 			@RequestParam("title") String title,
 			@RequestParam("introduce") String introduce,
 			@RequestParam("beginTime") Date beginTime,
@@ -79,7 +82,7 @@ public class ActivityController {
 			@RequestParam("bulkLink") String bulkLink,
 			@RequestParam("activityAddress") String activityAddress,
 			@RequestParam("activityAddressLatitude") String activityAddressLatitude,
-			@RequestParam("activityAddressLongitude") String activityAddressLongitude,	
+			@RequestParam("activityAddressLongitude") String activityAddressLongitude,
 			@RequestParam("collectAddress") String collectAddress,
 			@RequestParam("collectAddressLatitude") String collectAddressLatitude,
 			@RequestParam("collectAddressLongitude") String collectAddressLongitude,
@@ -87,8 +90,8 @@ public class ActivityController {
 			@RequestParam("labels") String[] labels,
 			@RequestParam("files") CommonsMultipartFile files,
 			@RequestParam("uId") int uId, final HttpSession session) {
-			
-		//新活动
+
+		// 新活动
 		YActivity activity = new YActivity();
 		YUser creator = userService.getUserById(uId);
 		activity.setTitle("中心湖");
@@ -106,37 +109,37 @@ public class ActivityController {
 		activity.setCollectAddressLongitude("465.06548465");
 		activity.setMaxCount(10);
 		activity.setCreator(creator);
-		//参与者
+		// 参与者
 		YActivityUser activityUser = new YActivityUser();
 		activityUser.setActivity(activity);
 		activityUser.setUser(activity.getCreator());
 		activityUser.setIsAuth(1);
 		activityUser.setIsTickOff(0);
 		activityUser.setJoin_time(new Date());
-		Set<YActivityUser> activityUsers=new HashSet<YActivityUser>();
+		Set<YActivityUser> activityUsers = new HashSet<YActivityUser>();
 		activityUsers.add(activityUser);
 		activity.setActivityUsers(activityUsers);
-		//labels标签
-		Set<YLabel> labelList=new HashSet<YLabel>();
+		// labels标签
+		Set<YLabel> labelList = new HashSet<YLabel>();
 		for (String label : labels) {
-			YLabel newLabel=new YLabel();
+			YLabel newLabel = new YLabel();
 			newLabel.setActivity(activity);
 			newLabel.setContent(label);
 			labelList.add(newLabel);
 		}
-		//pictures图文
-		HashMap<String, String> paths=new UploadUtil(CActivity.DEFAULT_UPLOAD_PATH).uploadFiles(files,
-				request);
-		Set<YPicture> pictureList=new HashSet<YPicture>();
+		// pictures图文
+		HashMap<String, String> paths = new UploadUtil(
+				CActivity.DEFAULT_UPLOAD_PATH).uploadFiles(request, response);
+		Set<YPicture> pictureList = new HashSet<YPicture>();
 		for (String path : paths.values()) {
-			YPicture picture=new YPicture();
+			YPicture picture = new YPicture();
 			picture.setActivity(activity);
 			picture.setUploaDate(new Date());
 			picture.setUrl(path);
 			pictureList.add(picture);
 		}
 		activityService.add(activity);
-		
+
 		return JacksonUtil.writeEntity2JSON("");
 	}
 
@@ -158,8 +161,9 @@ public class ActivityController {
 		activityService.deleteActivity(activityId);
 		return "";
 	}
-	//分页获取用户的所有活动
-	//分页获取圈子的活动
+
+	// 分页获取用户的所有活动
+	// 分页获取圈子的活动
 
 	// 参与活动
 	@RequestMapping(value = "/joinActivity", method = RequestMethod.GET)

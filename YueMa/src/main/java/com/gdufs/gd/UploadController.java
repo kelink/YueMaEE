@@ -3,6 +3,7 @@ package com.gdufs.gd;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +37,12 @@ public class UploadController {
 	 */
 	@RequestMapping("/upload2")
 	@ResponseBody
-	public String uploadFile2(@RequestParam("file") CommonsMultipartFile file,
-			HttpServletRequest request) throws IOException {
-		String defaultPath = request.getSession().getServletContext()
-				.getRealPath("upload/img/");
-		System.out.println(new UploadUtil(defaultPath).uploadFiles(file,
-				request).toString());
-		return defaultPath;
+	public String uploadFile2(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		System.out.println(request.getHeaderNames().toString());
+		System.out.println("输入的是----------》》》"
+				+ new UploadUtil().uploadFiles(request, response).toString());
+		return "success";
 	}
 
 }
