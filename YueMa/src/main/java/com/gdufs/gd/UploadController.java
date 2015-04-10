@@ -1,12 +1,14 @@
 package com.gdufs.gd;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -35,13 +37,12 @@ public class UploadController {
 	/**
 	 * springMVC封装的解析request上传文件（快捷、与springMVC很好结合，首选）
 	 */
-	@RequestMapping("/upload2")
+	@RequestMapping(value = "/upload2", method = { RequestMethod.GET,
+			RequestMethod.POST, RequestMethod.PUT })
 	@ResponseBody
-	public String uploadFile2(HttpServletRequest request,
+	public String uploadFile2(HttpServletRequest request,@RequestParam("title") String title,
 			HttpServletResponse response) throws IOException {
-		System.out.println(request.getHeaderNames().toString());
-		System.out.println("输入的是----------》》》"
-				+ new UploadUtil().uploadFiles(request, response).toString());
+		new UploadUtil().uploadFiles(request, response).toString();
 		return "success";
 	}
 

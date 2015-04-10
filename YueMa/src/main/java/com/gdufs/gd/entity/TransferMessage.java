@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * 用于返回数据给客户端
+ * 和服务端交互的JSON格式定义
  * 
  * @author Administrator
- *
+ * 
  */
-public class TransferMessage extends BaseEntity implements Serializable {
+public class TransferMessage implements Serializable {
 	private static final long serialVersionUID = 7814300739991315981L;
 
 	public TransferMessage() {
@@ -40,7 +40,7 @@ public class TransferMessage extends BaseEntity implements Serializable {
 		this.message = message;
 	}
 
-	public Map<?, ?> getResultMap() {
+	public Map<String, ?> getResultMap() {
 		return resultMap;
 	}
 

@@ -2,6 +2,7 @@ package com.gdufs.gd.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,6 +57,14 @@ public class YActivityServiceImpl implements YActivityService {
 	public boolean deleteActivity(int activityId) {
 		// 删除活动
 		return activityDao.delete(activityId);
+	}
+
+	/**
+	 * 通过电话号码获取朋友圈子的动态
+	 */
+	@Override
+	public HashMap<String, List> getYActivitiesbyPhonNnum(String phoneNum) {
+		return activityDao.getYActivitiesbyPhonNnum(phoneNum);
 	}
 
 }

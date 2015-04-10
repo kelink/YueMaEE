@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * 用户联系表，也是一度人脉表
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "YContact")
+@Table(name = "YContact",uniqueConstraints = {@UniqueConstraint(columnNames={"hostNum", "friendNum"})})
 public class YContact {
 
 	public YContact() {
@@ -26,14 +27,18 @@ public class YContact {
 	@Column(name = "id", length = 11)
 	private int id;
 
-	@Column(name = "hostNum", length = 20, nullable = false)
+	@Column(name = "hostNum", length = 20 ,nullable = false)
 	private String hostNum;
 
-	@Column(name = "friendNum", length = 20, nullable = false)
+	@Column(name = "friendNum", length = 20,nullable = false)
 	private String friendNum;
 
-	@Column(name = "version", length = 11, nullable = false)
+	@Column(name = "version", length = 11, nullable = false,columnDefinition="INT default 0")
 	private int version;
+	
+	@Column(name = "isSysUser", length = 11, nullable = false,columnDefinition="INT default 0")
+	private int isSysUser;
+	
 
 	public int getId() {
 		return id;
@@ -65,6 +70,14 @@ public class YContact {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public int getIsSysUser() {
+		return isSysUser;
+	}
+
+	public void setIsSysUser(int isSysUser) {
+		this.isSysUser = isSysUser;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,6 +25,9 @@ public class YContactDaoImpl extends BaseDao implements YContactDao {
 		super();
 	}
 
+	/**
+	 * 批量插入contact
+	 */
 	@Override
 	public boolean addContacts(List<YContact> contactObj) {
 		Session session = this.getSession();
@@ -46,30 +50,30 @@ public class YContactDaoImpl extends BaseDao implements YContactDao {
 
 	}
 
+	/**
+	 * 更新属性isSysUser
+	 */
 	@Override
-	public boolean deleteContactById(String id) {
-		return false;
-		// TODO Auto-generated method stub
-
+	public boolean updateIsSysUserByFriendsNum(String friendNum) {
+		Session session = this.getSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			String hql="update YContact contact set contact.isSysUser=1 where contact.friendNum=?";
+			Query query=session.createQuery(hql);
+			query.setString(0, friendNum);
+			query.executeUpdate();
+			session.flush();
+			tx.commit();
+			return true;
+		} catch (Exception ex) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			logger.error("Add contact object error" + ex.getMessage());
+			return false;
+		}
 	}
 
-	@Override
-	public boolean updateContactById(YContact contactObj) {
-		return false;
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<YContact> getContactObjById(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<YContact> getAllContact() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

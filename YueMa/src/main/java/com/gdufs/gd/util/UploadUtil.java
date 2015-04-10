@@ -67,15 +67,17 @@ public class UploadUtil {
 					String myFileName = file.getOriginalFilename();
 					// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
 					if (myFileName.trim() != "") {
-						System.out.println(myFileName);
 						// 重命名上传后的文件名
 						String fileName = generateFileName() + myFileName;
-						// 定义上传路径
-						String path = defaultPath + fileName;
-						File localFile = new File(path);
+						//项目路径
+						String defaultPath=request.getSession().getServletContext().getRealPath("images");						
+						if (!FileUtil.isDirExist(new File(defaultPath))) {
+							FileUtil.createDir(defaultPath);//創建目錄
+						}				
+						File localFile = new File(defaultPath +File.separator+ fileName);
 						try {
 							file.transferTo(localFile);
-							paths.put(myFileName, path);
+							paths.put(myFileName, "images/"+fileName);
 						} catch (IllegalStateException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
@@ -89,6 +91,8 @@ public class UploadUtil {
 				System.out.println(finaltime - pre);
 			}
 
+		}else {
+			System.out.println("can not fund upload file");
 		}
 		return paths;
 	}

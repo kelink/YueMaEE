@@ -32,7 +32,7 @@
  -->
 	<h4>上传文件1</h4>
 	<form name="userForm" action="/gd/file/upload2" method="post" enctype="multipart/form-data" >
-		title:<input type="text" name="titile"/><br/>
+		title:<input type="text" name="title"/><br/>
 	
 		Begin time:<input type="text" name="beginTime"/><br/>
 		End time:<input type="text" name="endTime"/><br/>

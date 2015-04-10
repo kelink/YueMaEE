@@ -1,5 +1,6 @@
 package com.gdufs.gd.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.gdufs.gd.entity.YActivity;
@@ -37,4 +38,12 @@ public interface YActivityService {
 	 * @return
 	 */
 	public boolean deleteActivity(int activityId);
+	
+	
+	/**
+	 * 通过用户的手机号码，获取每个activity的情况
+	 * 包括自己，一度朋友，二度朋友
+	 * @return
+	 */
+	public HashMap<String, List> getYActivitiesbyPhonNnum(String phoneNum);
 }

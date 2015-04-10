@@ -29,7 +29,7 @@ public class ContactController {
 	private YContactService contactService;
 
 	/**
-	 * 添加通讯录 （发生更改时候需要更新二度人脉关系表）
+	 * 添加通讯录 （发生更改时候需要更新一度和二度人脉关系表）
 	 * 
 	 * @param contactList
 	 * @return
@@ -37,6 +37,7 @@ public class ContactController {
 	 @RequestMapping(value = "/addContact",method = {RequestMethod.GET,RequestMethod.POST})  
 	 @ResponseBody
 	public String addContact(
+			@RequestParam(value =C.ParamsName.UID, defaultValue = "") int uId,
 			@RequestParam(value =C.ParamsName.PHONE_NUM, defaultValue = "") String phoneNum,
 			@RequestParam(value =C.ParamsName.CONTACT, defaultValue = "") String contactStr) {
 		 System.out.println("phoneNum--------->"+phoneNum);
@@ -51,6 +52,7 @@ public class ContactController {
 			List<YContact> contactList=new ArrayList<YContact>();
 			for (String item : list) {
 				YContact contact=new YContact();
+				contact.setId(uId);
 				contact.setHostNum(phoneNum);
 				contact.setFriendNum(item);
 				contact.setVersion(0);

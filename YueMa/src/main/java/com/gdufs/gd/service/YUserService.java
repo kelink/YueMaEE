@@ -6,7 +6,7 @@ import com.gdufs.gd.entity.YUser;
 public interface YUserService {
 	public TransferMessage register(YUser user);
 
-	public boolean login(YUser user);
+	public YUser CheckUser(YUser user);
 
 	public YUser getUserById(int id);
 	

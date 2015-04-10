@@ -1,10 +1,14 @@
 package com.gdufs.gd;
 
+import java.rmi.server.UID;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -14,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +28,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.gdufs.gd.common.C;
 import com.gdufs.gd.common.CActivity;
+import com.gdufs.gd.entity.TransferMessage;
 import com.gdufs.gd.entity.YActivity;
 import com.gdufs.gd.entity.YActivityUser;
-import com.gdufs.gd.entity.YLabel;
-import com.gdufs.gd.entity.YPicture;
 import com.gdufs.gd.entity.YUser;
 import com.gdufs.gd.service.YActivityService;
 import com.gdufs.gd.service.YActivityUserService;
@@ -59,8 +64,6 @@ public class ActivityController {
 		return "activity";
 	}
 
-	// 上传图文
-
 	/**
 	 * 
 	 * @param request
@@ -69,46 +72,53 @@ public class ActivityController {
 	 * @return
 	 */
 	// 发起活动
-	@RequestMapping(value = "/newActivity", method = RequestMethod.GET)
+	@RequestMapping(value = "/newActivity", method = { RequestMethod.GET,
+			RequestMethod.POST })
 	@ResponseBody
 	public String newActivity(
 			final HttpServletRequest request,
 			final HttpServletResponse response,
-			@RequestParam("title") String title,
-			@RequestParam("introduce") String introduce,
-			@RequestParam("beginTime") Date beginTime,
-			@RequestParam("endTime") Date endTime,
-			@RequestParam("perCost") double perCost,
-			@RequestParam("bulkLink") String bulkLink,
-			@RequestParam("activityAddress") String activityAddress,
-			@RequestParam("activityAddressLatitude") String activityAddressLatitude,
-			@RequestParam("activityAddressLongitude") String activityAddressLongitude,
-			@RequestParam("collectAddress") String collectAddress,
-			@RequestParam("collectAddressLatitude") String collectAddressLatitude,
-			@RequestParam("collectAddressLongitude") String collectAddressLongitude,
-			@RequestParam("maxCount") int maxCount,
-			@RequestParam("labels") String[] labels,
-			@RequestParam("files") CommonsMultipartFile files,
-			@RequestParam("uId") int uId, final HttpSession session) {
-
+			@RequestParam(value = C.ParamsName.TITLE, required = true, defaultValue = "") String title,
+			@RequestParam(value = C.ParamsName.INTRODUCE, required = false, defaultValue = "") String introduce,
+			@RequestParam(value = C.ParamsName.BEGINTIME, required = true, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
+			@RequestParam(value = C.ParamsName.ENDTIME, required = true, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+			@RequestParam(value = C.ParamsName.COST, required = false, defaultValue = "") double cost,
+			@RequestParam(value = C.ParamsName.ACTIVITY_ADDRESS, required = true, defaultValue = "") String activityAddress,
+			@RequestParam(value = C.ParamsName.ACTIVITY_ADDRESS_LATITUDE, required = true, defaultValue = "") String activityAddressLatitude,
+			@RequestParam(value = C.ParamsName.ACTIVITY_ADDRESS_LONGITUDE, required = true, defaultValue = "") String activityAddressLongitude,
+			@RequestParam(value = C.ParamsName.COUNT, required = true, defaultValue = "") int count,
+			@RequestParam(value = C.ParamsName.CATEGORY, required = true, defaultValue = "") String category,
+			@RequestParam(value = C.ParamsName.PHONE_NUM, required = true, defaultValue = "") String creatorPhoneNum,
+			@RequestParam(value = C.ParamsName.CONTACTPHONE, required = true, defaultValue = "") String contactPhone,
+			@RequestParam(value = C.ParamsName.UID, required = true, defaultValue = "") int uId) {
+		// 上传图片
+		HashMap<String, String> pathMap = new UploadUtil().uploadFiles(request,
+				response);
+		System.out.println(pathMap.toString());
+		// 设定只有一张图片
+		String picturePath = "";
+		for (String path : pathMap.values()) {
+			picturePath = path;
+		}
 		// 新活动
 		YActivity activity = new YActivity();
 		YUser creator = userService.getUserById(uId);
-		activity.setTitle("中心湖");
-		activity.setIntroduce("骑单车");
+		System.out.println(creator);
+		activity.setTitle(title);
+		activity.setIntroduce(introduce);
 		activity.setCreateTimeDate(new Date());
-		activity.setBeginTime(new Date());
-		activity.setEndTime(new Date());
-		activity.setPerCost(10.5);
-		activity.setBulkLink("http://www.baidu.com");
-		activity.setActivityAddress("中心湖");
-		activity.setActivityAddressLatitude("15.25685");
-		activity.setActivityAddressLongitude("18.25685");
-		activity.setCollectAddress("中行");
-		activity.setCollectAddressLatitude("465.06548465");
-		activity.setCollectAddressLongitude("465.06548465");
-		activity.setMaxCount(10);
+		activity.setBeginTime(beginTime);
+		activity.setEndTime(endTime);
+		activity.setPerCost(cost);
+		activity.setActivityAddress(activityAddress);
+		activity.setActivityAddressLatitude(activityAddressLatitude);
+		activity.setActivityAddressLongitude(activityAddressLongitude);
+		activity.setMaxCount(count);
 		activity.setCreator(creator);
+		activity.setCreatorPhoneNum(creatorPhoneNum);
+		activity.setContactPhone(contactPhone);
+		activity.setCategory(category);
+		activity.setPicturePath(picturePath);
 		// 参与者
 		YActivityUser activityUser = new YActivityUser();
 		activityUser.setActivity(activity);
@@ -116,38 +126,29 @@ public class ActivityController {
 		activityUser.setIsAuth(1);
 		activityUser.setIsTickOff(0);
 		activityUser.setJoin_time(new Date());
-		Set<YActivityUser> activityUsers = new HashSet<YActivityUser>();
-		activityUsers.add(activityUser);
-		activity.setActivityUsers(activityUsers);
-		// labels标签
-		Set<YLabel> labelList = new HashSet<YLabel>();
-		for (String label : labels) {
-			YLabel newLabel = new YLabel();
-			newLabel.setActivity(activity);
-			newLabel.setContent(label);
-			labelList.add(newLabel);
+		// 返回信息
+		TransferMessage message = new TransferMessage();
+		if (activityService.add(activity)) {
+			message.setCode(C.ResponseCode.SUCCESS);
+			message.setMessage(C.ResponseMessage.SUCCESS);
+			message.setResultMap(null);
+		} else {
+			message.setCode(C.ResponseCode.ERROR);
+			message.setMessage(C.ResponseMessage.WRONG_USER_INFO);
+			message.setResultMap(null);
 		}
-		// pictures图文
-		HashMap<String, String> paths = new UploadUtil(
-				CActivity.DEFAULT_UPLOAD_PATH).uploadFiles(request, response);
-		Set<YPicture> pictureList = new HashSet<YPicture>();
-		for (String path : paths.values()) {
-			YPicture picture = new YPicture();
-			picture.setActivity(activity);
-			picture.setUploaDate(new Date());
-			picture.setUrl(path);
-			pictureList.add(picture);
-		}
-		activityService.add(activity);
-
-		return JacksonUtil.writeEntity2JSON("");
+		return JacksonUtil.writeEntity2JSON(message);
 	}
 
 	// 获取创建者所创建的所有活动
 	@RequestMapping(value = "/getCreatorActivities", method = RequestMethod.GET)
 	@ResponseBody
-	public String getCreatorActivities(final HttpServletRequest request,
-			@RequestParam("uId") int uId, final HttpSession session) {
+	public String getCreatorActivities(
+			final HttpServletRequest request,
+			@RequestParam("uId") int uId,
+			final HttpSession session,
+			@RequestParam(value = C.ParamsName.PAGENUM, required = false, defaultValue = "0") int pageNum,
+			@RequestParam(value = C.ParamsName.PAGESIZE, required = false, defaultValue = "0") int pageSize) {
 		List<YActivity> activitiesList = activityService
 				.getActivityByCreatorId(uId);
 		return JacksonUtil.writeEntity2JSON(activitiesList.toString());
@@ -163,7 +164,25 @@ public class ActivityController {
 	}
 
 	// 分页获取用户的所有活动
-	// 分页获取圈子的活动
+	// 获取圈子的活动(支持分页)
+	@RequestMapping(value = "/getFriendsMsg", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String getFriendsMsg(
+			final HttpServletRequest request,
+			final HttpServletResponse response,
+			@RequestParam(C.ParamsName.UID) String uId,
+			@RequestParam(C.ParamsName.PHONE_NUM) String phoneNum,
+			@RequestParam(value = C.ParamsName.PAGENUM, required = false, defaultValue = "0") int pageNum,
+			@RequestParam(value = C.ParamsName.PAGESIZE, required = false, defaultValue = "0") int pageSize) {
+		// 获得我的
+		// 获得一度朋友的
+		// 获得二度朋友的
+		// 返回数据(可以选择或者不选择分页)
+		logger.info("getFriendsMsg-------------------------------->>>"+"getFriendsMsg");
+		System.out.println(activityService.getYActivitiesbyPhonNnum(phoneNum).toString());
+		return null;
+
+	}
 
 	// 参与活动
 	@RequestMapping(value = "/joinActivity", method = RequestMethod.GET)

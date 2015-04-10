@@ -1,5 +1,6 @@
 package com.gdufs.gd.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.gdufs.gd.entity.YActivity;
@@ -14,6 +15,8 @@ public interface YActivityDao {
 	public List<YActivity> getActivityByCreatorId(int uId);
 	
 	public List<YActivity> getActivityByPage(int pageNum, int pageSize);
-
+	
+	public HashMap<String, List> getYActivitiesbyPhonNnum(String phoneNUm);
+	
 	public boolean delete(int activityId);
 }

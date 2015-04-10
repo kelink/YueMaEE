@@ -53,6 +53,9 @@ public class YContactServiceImpl implements YContactService {
 		return false;
 	}
 
+	/**
+	 * 更新用户关系表
+	 */
 	@Override
 	public boolean updateContactByUserId(int userId, List<YContact> contactList) {
 		// TODO Auto-generated method stub

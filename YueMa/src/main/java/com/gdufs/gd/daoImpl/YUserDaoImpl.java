@@ -45,8 +45,25 @@ public class YUserDaoImpl extends BaseDao implements YUserDao {
 
 	@Override
 	public boolean update(YUser user) {
-		// TODO Auto-generated method stub
-		return false;
+		//需要重写
+		Session session = this.getSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			
+			
+			session.save(user);
+			session.flush();
+			tx.commit();
+			return true;
+		} catch (Exception ex) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			System.out.println(ex);
+			logger.error("Add YUser error" + ex.getMessage());
+			return false;
+		}
 	}
 
 	@Override

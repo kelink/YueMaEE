@@ -25,13 +25,13 @@ public class YRelationSecond {
 	@Column(length = 11, name = "id")
 	private int id;
 
-	@Column(name = "hostNum", nullable = false)
+	@Column(name = "hostNum", length = 20 ,nullable = false)
 	private String hostNum;
 
-	@Column(name = "friendNum", nullable = false)
+	@Column(name = "friendNum", length = 20,nullable = false)
 	private String friendNum;
 
-	@Column(name = "middle", nullable = false)
+	@Column(name = "middle", length = 20,nullable = false)
 	private String middle;
 
 	public int getId() {

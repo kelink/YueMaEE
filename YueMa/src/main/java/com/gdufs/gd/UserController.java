@@ -3,8 +3,10 @@ package com.gdufs.gd;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gdufs.gd.common.C;
 import com.gdufs.gd.common.CResponse;
 import com.gdufs.gd.entity.TransferMessage;
+import com.gdufs.gd.entity.YBulletin;
 import com.gdufs.gd.entity.YUser;
+import com.gdufs.gd.service.YBulletinService;
 import com.gdufs.gd.service.YUserService;
 import com.gdufs.gd.util.JacksonUtil;
 import com.gdufs.gd.util.RandomUtils;
@@ -29,6 +33,9 @@ public class UserController {
 
 	@Resource(name = "userService")
 	private YUserService userService;
+	
+	@Resource(name = "bulletinService")
+	private YBulletinService bulletinService;//系统公告类
 
 	
 	 @RequestMapping(value = "/login",method = {RequestMethod.GET,RequestMethod.POST})  
@@ -40,10 +47,14 @@ public class UserController {
 		 YUser user=new YUser();
 		 user.setPhoneNumber(phoneNum);
 		 user.setPassword(pwd);
-		 if (userService.login(user)) {
+		 YUser user2=userService.CheckUser(user);
+		 if (user2!=null) {
+			 HashMap<String, String> result=new HashMap<String, String>();
+			 result.put(C.ParamsName.UID, String.valueOf(user2.getId()));
+			 result.put(C.ParamsName.USERNAME, user2.getNickName());
 			 message.setCode(C.ResponseCode.SUCCESS);
 			 message.setMessage(C.ResponseMessage.SUCCESS);
-			 message.setResultMap(null);
+			 message.setResultMap(result);
 		}else {
 			message.setCode(C.ResponseCode.ERROR);
 			message.setMessage(C.ResponseMessage.WRONG_USER_INFO);
@@ -85,7 +96,6 @@ public class UserController {
 		} else {
 			//验证注册码
 			String seeesionTime = (String)httpSession.getAttribute(phoneNum);
-			System.out.println("seeesionTime----------------------------->>>>"+seeesionTime);
 			if (seeesionTime==null||phoneNum == null || phoneNum.equals("")) {
 				message.setCode(C.ResponseCode.ERROR);
 				message.setMessage(CResponse.Message.REQUEST_ERROR);
@@ -113,6 +123,8 @@ public class UserController {
 							user.setPhoneNumber(phoneNum);
 							user.setCreateTime(new Date());
 							user.setNickName(username);
+							//系统公告
+							//创建提醒						
 							message = userService.register(user);
 						}
 					}
@@ -187,7 +199,7 @@ public class UserController {
 	public String getUserinfo(@RequestParam(C.ParamsName.UID) int uId){
 		YUser user=userService.getUserById(uId);
 		TransferMessage message = new TransferMessage();
-		if (user!=null) {
+		if (user==null) {
 			message.setCode(C.ResponseCode.ERROR);
 			message.setMessage(C.ResponseMessage.ERROR);
 			message.setResultMap(null);
